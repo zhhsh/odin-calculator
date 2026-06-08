@@ -205,10 +205,8 @@ document.querySelector('#calculator').addEventListener('click', e => {
 			if (result === undefined) {
 				document.querySelector('#display').textContent += EXPRESSION_ERROR_MSG;
 			} else {
-				document.querySelector('#display').textContent += ` = ${result}`;
+				document.querySelector('#display').textContent += ` = ${roundResult(result)}`;
 				duringCalculation = false;
-				// document.querySelector('#display').innerHTML = `${expr}<br>${result}`;
-				// document.querySelector('#display').style.fontSize = '5px';
 			}
 			break;
 		case 'AC':
@@ -276,6 +274,10 @@ function splitExpression(expr) {
 		}
 	}
 	return exprElements;
+}
+
+function roundResult(num) {
+	return Math.round(num * 1E10) / 1E10;
 }
 
 // test calculateExpression
