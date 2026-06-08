@@ -27,7 +27,7 @@
 	border-radius: 3px;
 	overflow-x: scroll;
 	/* overflow-y: none; */
-	/* white-space: nowrap; */
+	white-space: nowrap;
 	scrollbar-width: none;
 }
 
