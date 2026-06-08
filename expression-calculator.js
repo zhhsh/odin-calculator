@@ -42,7 +42,7 @@ function multiply(a, b) {
 	return a * b;
 }
 function divide(a, b) {
-	return a / b;
+	return b == 0 ? undefined : a / b;
 }
 
 function binaryOperate(op, num1, num2) {
@@ -141,6 +141,7 @@ function calculateExpression(expr) {
 						let num2 = num_stack.pop();
 						let num1 = num_stack.pop();
 						let result = binaryOperate(op, num1, num2);
+						if (result == undefined) return undefined;
 						num_stack.push(result);
 					}
 				}
@@ -168,6 +169,7 @@ function calculateExpression(expr) {
 						let num2 = num_stack.pop();
 						let num1 = num_stack.pop();
 						let result = binaryOperate(op, num1, num2);
+						if (result == undefined) return undefined;
 						num_stack.push(result);
 					}
 				}
@@ -190,6 +192,7 @@ function calculateExpression(expr) {
 			let num2 = num_stack.pop();
 			let num1 = num_stack.pop();
 			let result = binaryOperate(op, num1, num2);
+			if (result == undefined) return undefined;
 			num_stack.push(result);
 		}
 	}
