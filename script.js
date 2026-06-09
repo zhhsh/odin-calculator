@@ -35,14 +35,24 @@ function operate(op, num1, num2) {
 	}
 }
 
+function getFormulaContent() {
+	return document.querySelector('#formula-display').textContent;
+}
+function setFormulaContent(newContent) {
+	document.querySelector('#formula-display').textContent = newContent;
+}
+function appendFormulaContent(appendContent) {
+	document.querySelector('#formula-display').textContent += appendContent;
+}
+
 function getDisplayContent() {
-	return document.querySelector('#display').textContent;
+	return document.querySelector('#input-display').textContent;
 }
 function setDisplayContent(newContent) {
-	document.querySelector('#display').textContent = newContent;
+	document.querySelector('#input-display').textContent = newContent;
 }
 function appendDisplayContent(appendContent) {
-	document.querySelector('#display').textContent += appendContent;
+	document.querySelector('#input-display').textContent += appendContent;
 }
 
 
@@ -58,29 +68,37 @@ function handleInput(currentInput) {
 			// prevent 0 prefix in number
 			if (currentDisplayContent == '0') {
 				setDisplayContent(currentInput);
+				setFormulaContent(currentInput);
 			} else {
 				appendDisplayContent(currentInput);
+				appendFormulaContent(currentInput);
 			}
 		} else if (currentInput == '.') {
 			// append . only if num doesn't have one
 			if (!currentDisplayContent.includes('.')) {
 				appendDisplayContent(currentInput);
+				appendFormulaContent(currentInput);
 			}
 		} else if ('+-*/^'.includes(currentInput)) {
 			// set num1 and operator
 			num1 = parseFloat(currentDisplayContent);
 			operator = currentInput;
+			appendFormulaContent(currentInput);
 		} else if (currentInput == '←') {
 			// if new content is empty, use 0
 			if (currentDisplayContent.length > 1) {
 				setDisplayContent(currentDisplayContent.slice(0, -1));
+				setFormulaContent(getFormulaContent().slice(0, -1));
 			} else {
 				setDisplayContent('0');
+				setFormulaContent('0');
 			}
 		} else if (currentInput == 'C') {
 			setDisplayContent('0');
+			setFormulaContent('0');
 		} else if (currentInput == 'AC') {
 			setDisplayContent('0');
+			setFormulaContent('0');
 		} else if (currentInput == '=') {
 			// not ready to compute, do nothing
 		} else { // unsupport input
@@ -91,28 +109,35 @@ function handleInput(currentInput) {
 			// re-input num1 
 			num1 = undefined;
 			setDisplayContent(currentInput);
+			setFormulaContent(currentInput);
 		} else if (currentInput == '.') {
 			// re-input num1, start with '0.'
 			num1 = undefined;
 			setDisplayContent('0.');
+			setFormulaContent('0.');
 		} else if ('+-*/^'.includes(currentInput)) {
 			operator = currentInput;
+			setFormulaContent(`${num1}${operator}`);
 		} else if (currentInput == '←') {
 			// make num1 unfinished and modified num1
 			num1 = undefined;
 			if (currentDisplayContent.length > 1) {
 				setDisplayContent(currentDisplayContent.slice(0, -1));
+				setFormulaContent(currentDisplayContent.slice(0, -1));
 			} else {
 				setDisplayContent('0');
+				setFormulaContent('0');
 			}
 		} else if (currentInput == 'C') {
 			// clear num1
 			num1 = undefined;
 			setDisplayContent('0');
+			setFormulaContent('0');
 		} else if (currentInput == 'AC') {
 			// clear num1
 			num1 = undefined;
 			setDisplayContent('0');
+			setFormulaContent('0');
 		} else if (currentInput == '=') {
 			// not ready to compute, do nothing
 		} else { // unsupport input
@@ -123,23 +148,29 @@ function handleInput(currentInput) {
 			if (!num2_inputing) {
 				num2_inputing = true;
 				setDisplayContent(currentInput);
+				appendFormulaContent(currentInput);
 			} else {
 				if (currentDisplayContent == '0') {
 					setDisplayContent(currentInput);
+					setFormulaContent(`${getFormulaContent().slice(0, -1)}${currentInput}`);
 				} else {
 					appendDisplayContent(currentInput);
+					appendFormulaContent(currentInput);
 				}
 			}
 		} else if (currentInput == '.') {
 			if (!num2_inputing) {
 				num2_inputing = true;
 				setDisplayContent('0.');
+				appendFormulaContent('0.');
 			} else {
 				if (!currentDisplayContent.includes('.')) {
 					appendDisplayContent(currentInput);
+					appendFormulaContent(currentInput);
 				}
 			}
 		} else if ('+-*/^'.includes(currentInput)) {
+			// @todo
 			if (!num2_inputing) {
 				// replace the operator
 				operator = currentInput;
@@ -151,6 +182,7 @@ function handleInput(currentInput) {
 				if (!Number.isNaN(result)) { // operation success
 					// display result, set state to the next round operation
 					setDisplayContent(result);
+					setFormulaContent(`${result}${currentInput}`)
 					num1 = result;
 					operator = currentInput;
 					num2 = undefined;
@@ -171,25 +203,25 @@ function handleInput(currentInput) {
 			} else {
 				if (currentDisplayContent.length > 1) {
 					setDisplayContent(currentDisplayContent.slice(0, -1));
+					setFormulaContent(getFormulaContent().slice(0, -1));
 				} else {
 					setDisplayContent('0');
+					setFormulaContent(`${getFormulaContent().slice(0, -1)}0`);
 				}
 			}
 		} else if (currentInput == 'C') {
 			if (!num2_inputing) {
 				// num2 input not started, do nothing
 			} else {
-				if (currentDisplayContent.length > 1) {
-					setDisplayContent(currentDisplayContent.slice(0, -1));
-				} else {
-					setDisplayContent('0');
-				}
+				setDisplayContent('0');
+				setFormulaContent(`${getFormulaContent().slice(0, -currentDisplayContent.length)}0`);
 			}
 		} else if (currentInput == 'AC') {
 			num1 = undefined;
 			operator = undefined;
 			num2_inputing = false;
 			setDisplayContent('0');
+			setFormulaContent('0');
 		} else if (currentInput == '=') {
 			if (!num2_inputing) {
 				// num2 input is not started, not ready to compute, do nothing
@@ -201,6 +233,7 @@ function handleInput(currentInput) {
 				if (!Number.isNaN(result)) { // operation success
 					// display result, set state to the next round operation
 					setDisplayContent(result);
+					appendFormulaContent('=')
 					num1 = result;
 					operator = undefined;
 					num2 = undefined;

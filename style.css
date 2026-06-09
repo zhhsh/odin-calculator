@@ -31,6 +31,39 @@
 	scrollbar-width: none;
 }
 
+#calculator>#two-line-display {
+	display: block;
+	background-color: #fff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	text-align: right;
+	border-radius: 3px;
+}
+
+#formula-display {
+	/* outline: blue solid; */
+	height: 40px;
+	line-height: 40px;
+	padding: 0 6px;
+	font-size: 20px;
+	color: #555;
+	overflow-x: scroll;
+	white-space: nowrap;
+	scrollbar-width: none;
+}
+
+#input-display {
+	line-height: 50px;
+	height: 50px;
+	padding: 0 6px;
+	font-size: 24px;
+	/* outline: blue solid; */
+	overflow-x: scroll;
+	white-space: nowrap;
+	scrollbar-width: none;
+	border-top: 0.5px solid grey;
+}
+
 #calculator>div {
 	display: flex;
 	justify-content: space-between;
