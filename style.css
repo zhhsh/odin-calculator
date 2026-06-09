@@ -80,4 +80,17 @@ button {
 	font-weight: bold;
 }
 
-/* el.scrollLeft = el.scrollWidth - el.clientWidth; */
+
+div#footer {
+	text-align: center;
+}
+
+a {
+	text-decoration: none;
+}
+
+h1 {
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 30px auto 50px;
+	text-align: center;	
+}
