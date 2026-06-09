@@ -50,11 +50,8 @@ let num1, operator, num2;
 let num2_inputing = false;
 const DIVIDE_ZERO_ERROER_MSG = 'error operation: divide 0!';
 
-document.querySelector('#calculator').addEventListener('click', e => {
-	if (e.target.tagName != 'BUTTON') return;
-	let currentInput = e.target.textContent;
+function handleInput(currentInput) {
 	let currentDisplayContent = getDisplayContent();
-
 	if (num1 === undefined) {
 		// get input for the first number
 		if ('0123456789'.includes(currentInput)) {
@@ -223,5 +220,27 @@ document.querySelector('#calculator').addEventListener('click', e => {
 		}
 	} else { // never happen
 		// throw new Error;
+	}
+}
+
+let calculator = document.querySelector('#calculator');
+calculator.addEventListener('click', e => {
+	if (e.target.tagName != 'BUTTON') return;
+	let currentInput = e.target.textContent;
+	handleInput(currentInput);
+});
+
+document.addEventListener('keyup', e => {
+	if (e.key == 'Backspace') {
+		handleInput('←');
+	} else if (e.key == 'Enter') {
+		handleInput('=');
+	} else if (e.key == 'Escape') {
+		handleInput('AC');
+	}
+	else if ('+-*/^=.0123456789'.includes(e.key)) {
+		handleInput(e.key);
+	} else {
+		// unsupported key, ignore
 	}
 });
